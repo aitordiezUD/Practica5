@@ -2,7 +2,7 @@ package clases;
 
 import java.util.ArrayList;
 
-public class UsuarioTwitter {
+public class UsuarioTwitter implements Comparable{
 	String id;
 	String screenName;
 	ArrayList<String> tags;
@@ -97,6 +97,19 @@ public class UsuarioTwitter {
 	public String toString() {
 		return "UsuarioTwitter [id=" + id + ", screenName=" + screenName + ", followersCount=" + followersCount
 				+ ", friendsCount=" + friendsCount + "]";
+	}
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		UsuarioTwitter otro = (UsuarioTwitter) o;
+		if (!(GestionTwitter.contarAmigosEnSistema(this) == GestionTwitter.contarAmigosEnSistema(otro))) {
+			return GestionTwitter.contarAmigosEnSistema(otro) - GestionTwitter.contarAmigosEnSistema(this);
+		}else {
+			String nombre1 = this.screenName;
+			String nombre2 = otro.getScreenName();
+			return nombre1.compareTo(nombre2);
+		}
+		
 	}
 	
 	

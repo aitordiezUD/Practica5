@@ -113,7 +113,6 @@ public class CSV {
 					} else if (car==',' || car==';') {
 						if (inString) {  // separador dentro de string
 							stringActual += car;
-							System.out.println("String Actual: " + stringActual);
 						} else {  // separador que separa valores
 							if (separador==0) { // Si no se había encontrado separador hasta ahora
 								separador = car;
@@ -175,7 +174,6 @@ public class CSV {
 				ret.add( lista );
 			else if (!stringActual.isEmpty())
 				ret.add( getDato( stringActual, lastString ) );
-			if (lista != null)System.out.println(lista);
 			return ret;
 		}
 
@@ -207,52 +205,21 @@ public class CSV {
 
 	private static void procesaLineaDatos( ArrayList<Object> datos ) {
 		// TODO Cambiar este proceso si se quiere hacer algo con las cabeceras
-		
-		String linea = (String) datos.get(0); //Como datos.get(0) es un arrayList con un elemento que es un string, uso la siguiente linea para convertir este string en un ArrayList con diferentes elementos
-		ArrayList<Object> lista = stringToArrayList(linea);
-
-		
-		String id = (String) lista.get(0);
-		String screenName = (String) lista.get(1);
-		ArrayList<String> tags = (ArrayList<String>) lista.get(2);
-		String avatar = (String) lista.get(3);
-		Long followersCount = Long.parseLong(lista.get(4)+"");
-		Long friendsCount = Long.parseLong(lista.get(5)+"");
-		String lang = (String) lista.get(6);
-		Long lastSeen = Long.parseLong(lista.get(7)+"");
-		String tweetId = (String) lista.get(8);
-		ArrayList<String> friends = (ArrayList<String>) lista.get(9);
+	
+		String id = (String) datos.get(0);
+		String screenName = (String) datos.get(1);
+		ArrayList<String> tags = (ArrayList<String>) datos.get(2);
+		String avatar = (String) datos.get(3);
+		Long followersCount = Long.parseLong(datos.get(4)+"");
+		Long friendsCount = Long.parseLong(datos.get(5)+"");
+		String lang = (String) datos.get(6);
+		Long lastSeen = Long.parseLong(datos.get(7)+"");
+		String tweetId = (String) datos.get(8);
+		ArrayList<String> friends = (ArrayList<String>) datos.get(9);
 		UsuarioTwitter usuario = new UsuarioTwitter(id, screenName, tags, avatar, followersCount, friendsCount, lang, lastSeen, tweetId, friends);
-		GestionTwitter.getMapaUsuarios().put(id, usuario);
+		GestionTwitter.getMapaUsuariosId().put(id, usuario);
 	}
 	
-	private static ArrayList<Object> stringToArrayList (String linea){
-		ArrayList<Object> arrayList = new ArrayList<Object>();
-		String[] campos = linea.split(",");
-		ArrayList<String> listaActual = new ArrayList<String>();
-		boolean dentroArrayList = false;
-		for (int i=0; i<campos.length;i++) {
-			String campo = campos[i];
-			if (campo.charAt(0) == '[') {
-				dentroArrayList= true;
-//				Elimino el "[" del string
-				campo = campo.substring(1);
-			}
-			if(dentroArrayList) {
-				if(campo.charAt(campo.length()-1)== ']') {
-					campo = campo.substring(0, campo.length()-2);
-					listaActual.add(campo);
-					arrayList.add(listaActual);
-					listaActual = new ArrayList<String>();
-					dentroArrayList = false;
-				}
-				listaActual.add(campo);
-			}else {
-				arrayList.add(campo);
-			}
 
-		};
-		return arrayList;
-	}
 
 }
